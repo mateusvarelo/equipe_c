@@ -7,7 +7,7 @@ from pathlib import Path
 
 def main():
 
-    searches = ['arroz', 'feijão', 'tomate', 'refrigerante', 'suco']
+    searches = ['arroz', 'feijão', 'tomate', 'refrigerante', 'suco'][0]
 
     for search in searches:
         condor_api = CondorWebsite()
@@ -18,7 +18,7 @@ def main():
 
         # Pushing HTML raw data to brass datalake
 
-        directory_path = Path(f'downloads/brass/condor_html/search={search}/date={date}/')
+        directory_path = Path(f'equipe_c/brass/condor_html/search={search}/date={date}/')
         directory_path.mkdir(parents=True, exist_ok=True)
         path = directory_path / f'{id}.html'
         with open(path, 'w+') as f:
@@ -29,10 +29,12 @@ def main():
 
         # Pushing JSON data to bronze datalake
 
-        directory_path = Path(f'downloads/bronze/condor_html/search={search}/date={date}/')
+        directory_path = Path(f'equipe_c/bronze/condor_html/search={search}/date={date}/')
         directory_path.mkdir(parents=True, exist_ok=True)
         path = directory_path / f'{id}.json'
         with open(path, 'w+') as f:
+            print(parsed_website_data)
+            
             json.dump(parsed_website_data, f)
 
     

@@ -20,7 +20,7 @@ log.addHandler(ch)
 
 class CondorWebsite():
     def __init__(self) -> None:
-        self.base_url = "https://www.condor.com.br/pesquisa-usuario/"
+        self.base_url = "https://www.condor.com.br/pesquisa-usuario"
         self.build_url_search = None
 
     def _build_url_search(self, search: str):
@@ -42,13 +42,17 @@ class CondorWebsite():
         soup = BeautifulSoup(response_text)
 
         # This are the products not in the session "FIND MORE"
-        products = soup.find("div", {"class": "row mb-4"}).findAll("app-product")
-
-        products_data = []
-        for product in products:
-            product_data = get_nested_dict_attr_value(product, 'class')
-            product_data = self.add_metadata(product_data)
-            products_data.append()
+        try:
+            
+            products = soup.find("div", {"class": "row mb-4"}).findAll("app-product")    
+            products_data = []
+            for product in products:
+                product_data = get_nested_dict_attr_value(product, 'class')
+                product_data = self.add_metadata(product_data)
+                products_data.append()
+            return products_data    
+        except requests.RequestException  as e:
+            log.debug(f"Erro: {e}")      
 
 
     def add_metadata(self, 
